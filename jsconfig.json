@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "components/*": ["./components/*"],
+      "utils/*": ["./utils/*"],
+      "constants/*": ["./constants/*"],
+      "screen/*": ["./screen/*"],
+      "public/*": ["./public/*"],
+      "app/*": ["./app/*"]
+    }
+  }
+}
