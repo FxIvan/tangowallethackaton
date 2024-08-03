@@ -8,6 +8,9 @@ import {
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+import generateSeedPhrase, {
+  createSmartWallet,
+} from "../../../../util/generateSeedPhrase";
 
 export const authOptions = {
   session: {
@@ -100,7 +103,7 @@ export const authOptions = {
             }
           );
           const data = await response.json();
-          console.log("Data --->", data);
+
           if (!data) {
             console.log("Error Data --->");
             throw new Error(window.btoa(data.message) || "Error");
@@ -109,7 +112,39 @@ export const authOptions = {
           if (data.user._id) {
             account.id = data.user._id;
           }
+
+          const keyData = {
+            privateKey: "",
+            publicKey: "",
+            address: "",
+          };
+
+          if (data.register) {
+            const seedPhareStorage = localStorage.getItem("seedPhrase");
+            const { privateKey, publicKey, address } =
+              await loadAccountBlockchain(seedPhareStorage);
+
+            keyData.privateKey = privateKey;
+            keyData.publicKey = publicKey;
+            keyData.address = address;
+          } else {
+            const seedPhrase = await generateSeedPhrase(data.token);
+            localStorage.setItem("seedPhrase", seedPhrase);
+            const { privateKey, publicKey, address } =
+              await loadAccountBlockchain(seedPhrase);
+
+            keyData.privateKey = privateKey;
+            keyData.publicKey = publicKey;
+            keyData.address = address;
+
+            await createSmartWallet(address);
+          }
+
           account.accessToken = data.token;
+          account.privateKey = keyData.privateKey;
+          account.publicKey = keyData.publicKey;
+          account.address = keyData.address;
+
           return {
             id: data.user._id,
             provider: "google",
