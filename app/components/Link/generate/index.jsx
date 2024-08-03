@@ -4,6 +4,7 @@ import TangoWalletIcon from "public/TangoWalletIcon.png";
 import iconCopyPaste from "public/copypacteicon.png";
 import WarningIcon from "public/WarningIcon.png";
 import { useRouter } from "next/navigation";
+import { NEXT_PUBLIC_REDIRECT_PAYMENT } from "constants/env";
 
 export default function GenerateLinkComponent({ amount, wallet }) {
   const router = useRouter();
@@ -14,12 +15,12 @@ export default function GenerateLinkComponent({ amount, wallet }) {
           <Image src={TangoWalletIcon} alt="Icono Scroll" />
         </div>
         <div className="flex flex-row py-4 px-2 border-[#D1D1D1] rounded-lg border w-80 items-center">
-          <div className="mx-4 undeline truncate">{`http://localhost:3000/protect/transfer/qr?amount=${amount}&wallet=${wallet}`}</div>
+          <div className="mx-4 undeline truncate">{`${NEXT_PUBLIC_REDIRECT_PAYMENT}/protect/transfer/qr?amount=${amount}&wallet=${wallet}`}</div>
           <div>
             <button
               onClick={() =>
                 navigator.clipboard.writeText(
-                  `http://localhost:3000/protect/transfer/qr?amount=${amount}&wallet=${wallet}`
+                  `${NEXT_PUBLIC_REDIRECT_PAYMENT}/protect/transfer/qr?amount=${amount}&wallet=${wallet}`
                 )
               }
               className="flex items-center justify-center"
