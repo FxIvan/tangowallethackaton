@@ -118,7 +118,6 @@ export const authOptions = {
             address: "",
             smart_wallet_address: "",
           };
-
           if (data.register) {
             //const seedPhareStorage = localStorage.getItem("seedPhrase");
             //const { privateKey, address } = await loadAccount(seedPhareStorage);

@@ -27,8 +27,8 @@ export default async function SSRDepositAccountData() {
   const { userInfo } = await getData();
   return (
     <DepositAccountData
-      alias={userInfo.alias || "Alias"}
-      wallet={userInfo.wallet || "0x000"}
+      alias={userInfo?.alias ? userInfo?.alias : "Alias"}
+      wallet={userInfo?.wallet ? userInfo?.wallet : "0x000"}
     />
   );
 }

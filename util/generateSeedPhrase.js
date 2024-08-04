@@ -1,4 +1,4 @@
-const { ethers } = require("ethers");
+const { ethers } = require('ethers');
 const bip39 = require("bip39");
 const { BIP32Factory } = require("bip32");
 const secp256k1 = require("@bitcoinerlab/secp256k1");
@@ -13,8 +13,14 @@ const bip32 = BIP32Factory(secp256k1);
 
 //Tarea Seba: address del usuario asociado al contrato en la DB
 const generateSeedPhrase = (token) => {
+    //console.log("Entre a generateSeedPhrase");
+    // Get hash from token
+    const utf8Token = ethers.utils.toUtf8Bytes(token)
+    const tokenHash = ethers.utils.keccak256(utf8Token);
+    //console.log("tokenHash", tokenHash);
+
   // Generate entropy from token
-  const numericArray = convertBinaryToNumber(token, 8);
+  const numericArray = convertBinaryToNumber(tokenHash, 8);
   const entropy = toByteArray(numericArray);
 
   // Generate 12-word mnemonic
