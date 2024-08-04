@@ -1,13 +1,17 @@
 const { ethers } = require("ethers");
 const bip39 = require("bip39");
-
 const { BIP32Factory } = require("bip32");
-const { secp256k1 } = require("@bitcoinerlab/secp256k1");
+const secp256k1 = require("@bitcoinerlab/secp256k1");
 const { NEXT_PUBLIC_BACKEND } = require("constants/env");
-// You must wrap the @bitcoinerlab/secp256k1 implementation
+
+// Verifica la implementación de secp256k1
+console.log("secp256k1:", secp256k1);
+console.log("secp256k1.isPoint:", secp256k1.isPoint);
+
+// Wrap the @bitcoinerlab/secp256k1 implementation
 const bip32 = BIP32Factory(secp256k1);
 
-//Tarea Seba: addres del usuario asociado al contrato en la DB
+//Tarea Seba: address del usuario asociado al contrato en la DB
 const generateSeedPhrase = (token) => {
   // Generate entropy from token
   const numericArray = convertBinaryToNumber(token, 8);
@@ -30,7 +34,7 @@ const loadAccount = (mnemonic, accountIndex) => {
     const root = bip32.fromSeed(seed);
 
     // Derive a private key and address using the BIP44 standard route for Ethereum
-    const path = "m/44'/60'/0'/0/" + accountIndex; // First account
+    const path = `m/44'/60'/0'/0/${accountIndex}`; // First account
     const node = root.derivePath(path);
     const privateKey = node.privateKey.toString("hex");
 
@@ -78,7 +82,7 @@ const createSmartWallet = async (accountAddress, email) => {
   }
 };
 
-/// Aux functions
+// Auxiliary Functions
 
 function stringToBinary(str) {
   console.log("str", str);
