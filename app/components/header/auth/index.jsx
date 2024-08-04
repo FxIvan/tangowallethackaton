@@ -36,7 +36,6 @@ export default function HeaderAuth() {
             aria-label="Global"
             className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 h-14 relative px-4 py-2"
           >
-            
             <div className="flex lg:hidden">
               <button
                 type="button"
@@ -85,20 +84,22 @@ export default function HeaderAuth() {
             className="lg:hidden"
           >
             <div className="fixed inset-0 z-10" />
-            <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-gray-900 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
+            <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-gray-400 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
               <div className="flex items-center justify-between">
                 <a href="#" className="-m-1.5 p-1.5">
                   <span className="sr-only">Your Company</span>
-                  <img
-                    alt=""
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    className="h-8 w-auto"
+                  <Image
+                    src={TangoWalletLetra}
+                    alt="Tango Wallet Letra"
+                    className="w-16 h-16"
+                    width={900}
+                    height={900}
                   />
                 </a>
                 <button
                   type="button"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="-m-2.5 rounded-md p-2.5 text-gray-400"
+                  className="-m-2.5 rounded-md p-2.5 text-black"
                 >
                   <span className="sr-only">Close menu</span>
                   <XMarkIcon aria-hidden="true" className="h-6 w-6" />
@@ -107,17 +108,12 @@ export default function HeaderAuth() {
               <div className="mt-6 flow-root">
                 <div className="-my-6 divide-y divide-gray-500/25">
                   <div className="space-y-2 py-6">
-                    <button onClick={() => logoutHandler()}>
+                    <button
+                      onClick={() => logoutHandler()}
+                      className="text-black font-semibold py-4 px-6 items-center flex flex-row rounded-lg my-6 w-full"
+                    >
                       Cerrar session
                     </button>
-                  </div>
-                  <div className="py-6">
-                    <a
-                      href="#"
-                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white hover:bg-gray-800"
-                    >
-                      Log in
-                    </a>
                   </div>
                 </div>
               </div>
