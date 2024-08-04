@@ -20,8 +20,7 @@ const authMiddleware = withAuth(
 
 export default function middleware(req) {
   try {
-    //const privatePathnameRegex = RegExp(`^/protect/.*$`, "i");
-    const privatePathnameRegex = RegExp(`^/protectTEST/.*$`, "i");
+    const privatePathnameRegex = RegExp(`^/protect/.*$`, "i");
 
     // Check if the current route is a private page
     const isPrivatePage = privatePathnameRegex.test(req.nextUrl.pathname);
