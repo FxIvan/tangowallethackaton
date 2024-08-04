@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import PaymentMP from "public/paymentsmp.png";
 
 const ButtonSelect = ({ children, onClick, optionSelectedCurrent }) => {
   return (
@@ -14,7 +15,7 @@ const ButtonSelect = ({ children, onClick, optionSelectedCurrent }) => {
       onClick={onClick}
       className={`${
         optionSelectedCurrent ? "bg-[#878dd8]" : "bg-[#f6f6f6]"
-      } text-black font-bold py-4 px-6 items-center flex flex-row rounded-lg my-6 w-full`} // w-64
+      } text-black font-bold py-4 px-6 items-center flex flex-row rounded-lg my-3 w-full`} // w-64
     >
       {children}
     </button>
@@ -48,6 +49,15 @@ export default function ScreenDeposit() {
     },
   ];
 
+  const optionsDeposits = [
+    {
+      name: "Mercado pago",
+      icon: PaymentMP,
+      current: false,
+      key: "marketPayment",
+      href: "/protect/deposit/market",
+    },
+  ];
   const router = useRouter();
 
   return (
@@ -62,6 +72,21 @@ export default function ScreenDeposit() {
           Recibir
         </p>
         {options.map((option, index) => (
+          <ButtonSelect
+            key={index}
+            onClick={() => setOptionSelected(option.href)}
+            optionSelectedCurrent={optionSelected === option.href}
+          >
+            <Link className={`flex flex-row items-center`} href={option.href}>
+              <Image src={option.icon} alt={option.name} />
+              <span className="mx-2">{option.name}</span>
+            </Link>
+          </ButtonSelect>
+        ))}
+        <p class="flex-grow-0 flex-shrink-0 w-[296px] text-[11px] font-medium text-left text-[#454545]">
+          Depositar
+        </p>
+        {optionsDeposits.map((option, index) => (
           <ButtonSelect
             key={index}
             onClick={() => setOptionSelected(option.href)}
