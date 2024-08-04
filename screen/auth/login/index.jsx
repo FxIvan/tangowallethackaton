@@ -6,7 +6,14 @@ import { signIn } from "next-auth/react";
 import { useState } from "react";
 const ButtonLoginWithGoogle = () => {
   return (
-    <button className="bg-[#222fe6] text-white font-bold py-4 px-6 items-center flex flex-row rounded-lg w-64 text-center justify-between">
+    <button
+      onClick={async () => {
+        await signIn("google", {
+          callbackUrl: "/protect/dashboard",
+        });
+      }}
+      className="bg-[#222fe6] text-white font-bold py-4 px-6 items-center flex flex-row rounded-lg w-64 text-center justify-between"
+    >
       <Image src={GoogleIcon} alt="Google Icon" />
       <span className="mx-2">Ingresar con Google</span>
     </button>
@@ -18,7 +25,7 @@ const ButtonRegisterWithGoogle = () => {
     <button
       onClick={async () => {
         await signIn("google", {
-          callbackUrl: "/protect/portfolio",
+          callbackUrl: "/protect/dashboard",
         });
       }}
       className="bg-[#222fe6] text-white font-bold py-4 px-6 items-center flex flex-row rounded-lg w-64 text-center justify-between"

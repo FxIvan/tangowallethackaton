@@ -50,13 +50,16 @@ export default function ScreenDeposit() {
   const router = useRouter();
 
   return (
-    <div className="h-[80vh] flex flex-col items-center mx-4 justify-between my-4">
+    <div className="flex flex-col justify-start items-start self-stretch flex-grow gap-8 p-4">
       <div>
-        <h3 className="text-black">
-          ¿Cómo quieres generar la dirección de depósito?
-        </h3>
+      <p class="flex-grow w-[296px] text-base font-medium text-left text-[#454545]">
+  ¿Cómo quieres generar la dirección de depósito?
+</p>
       </div>
-      <div className="w-full">
+      <div className="flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 relative gap-4 p-4 rounded-2xl">
+      <p class="flex-grow-0 flex-shrink-0 w-[296px] text-[11px] font-medium text-left text-[#454545]">
+    Recibir
+  </p>
         {options.map((option, index) => (
           <ButtonSelect
             key={index}

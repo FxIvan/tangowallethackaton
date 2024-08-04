@@ -3,8 +3,8 @@ import { useState } from "react";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import TangoWalletLetra from "public/tangowalletLetra.png";
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
 const navigation = [
   { name: "Product", href: "#" },
   { name: "Features", href: "#" },

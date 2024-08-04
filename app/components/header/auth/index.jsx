@@ -5,7 +5,8 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import TangoWalletLetra from "public/tangowalletLetra.png";
 import Link from "next/link";
 import Image from "next/image";
-
+import { signOut } from "next-auth/react";
+import { NEXT_PUBLIC_REDIRECT_PAYMENT } from "constants/env";
 const navigation = [
   { name: "Product", href: "#" },
   { name: "Features", href: "#" },
@@ -21,14 +22,31 @@ export default function HeaderAuth() {
     setIsClient(true);
   }, []);
 
+  const logoutHandler = async () => {
+    await signOut({
+      callbackUrl: `${NEXT_PUBLIC_REDIRECT_PAYMENT}/auth/login`,
+    });
+  };
+
   return (
     <>
       {isClient && (
         <header className="">
           <nav
             aria-label="Global"
-            className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8 flex-row-reverse"
+            className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 h-14 relative px-4 py-2"
           >
+            
+            <div className="flex lg:hidden">
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(true)}
+                className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-400"
+              >
+                <span className="sr-only">Open main menu</span>
+                <Bars3Icon aria-hidden="true" className="h-8 w-8" />
+              </button>
+            </div>
             <div className="flex lg:flex-1">
               <Link href="/protect/dashboard" className="-m-1.5 p-1.5">
                 <span className="sr-only">Your Company</span>
@@ -40,16 +58,6 @@ export default function HeaderAuth() {
                   className="w-16 h-16"
                 />
               </Link>
-            </div>
-            <div className="flex lg:hidden">
-              <button
-                type="button"
-                onClick={() => setMobileMenuOpen(true)}
-                className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-400"
-              >
-                <span className="sr-only">Open main menu</span>
-                <Bars3Icon aria-hidden="true" className="h-8 w-8" />
-              </button>
             </div>
             <div className="hidden lg:flex lg:gap-x-12">
               {navigation.map((item) => (
@@ -99,15 +107,9 @@ export default function HeaderAuth() {
               <div className="mt-6 flow-root">
                 <div className="-my-6 divide-y divide-gray-500/25">
                   <div className="space-y-2 py-6">
-                    {navigation.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800"
-                      >
-                        {item.name}
-                      </a>
-                    ))}
+                    <button onClick={() => logoutHandler()}>
+                      Cerrar session
+                    </button>
                   </div>
                   <div className="py-6">
                     <a

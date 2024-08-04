@@ -9,7 +9,7 @@ export default function ScreenRegister() {
         <buton
           onClick={async () => {
             await signIn("google", {
-              callbackUrl: "/protect/dashboard",
+              callbackUrl: "/protect/portfolio",
             });
           }}
           className="flex flex-row items-center uppercase bg-gray-300 py-2 px-4 rounded-lg text-black font-bold cursor-pointer"

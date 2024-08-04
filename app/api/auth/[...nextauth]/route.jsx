@@ -8,9 +8,15 @@ import {
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import generateSeedPhrase, {
+/*import generateSeedPhrase, {
   createSmartWallet,
-} from "../../../../util/generateSeedPhrase";
+} from "../../../../util/generateSeedPhrase";*/
+
+const {
+  generateSeedPhrase,
+  createSmartWallet,
+  loadAccount,
+} = require("../../../../util/generateSeedPhrase");
 
 export const authOptions = {
   session: {
@@ -86,68 +92,78 @@ export const authOptions = {
     async signIn({ account, profile }) {
       try {
         if (account.provider === "google") {
-          console.log("------------------------------------------");
-          console.log("ID Token de google: ", account.id_token);
-          console.log("------------------------------------------");
-          const response = await fetch(
-            `${NEXT_PUBLIC_BACKEND}/users/login/google`,
-            {
-              method: "POST",
-              body: JSON.stringify({
-                code: account.id_token,
-              }),
-              headers: {
-                cache: "no-store",
-                "Content-Type": "application/json",
-              },
-            }
-          );
+          const response = await fetch(`${NEXT_PUBLIC_BACKEND}/user/register`, {
+            method: "POST",
+            body: JSON.stringify({
+              code: account.id_token,
+            }),
+            headers: {
+              cache: "no-store",
+              "Content-Type": "application/json",
+            },
+          });
           const data = await response.json();
-
+          console.log("Data Google --->", data);
           if (!data) {
             console.log("Error Data --->");
             throw new Error(window.btoa(data.message) || "Error");
           }
 
-          if (data.user._id) {
+          if (data.user) {
             account.id = data.user._id;
           }
 
           const keyData = {
             privateKey: "",
-            publicKey: "",
             address: "",
+            smart_wallet_address: "",
           };
 
           if (data.register) {
-            const seedPhareStorage = localStorage.getItem("seedPhrase");
-            const { privateKey, publicKey, address } =
-              await loadAccountBlockchain(seedPhareStorage);
-
+            //const seedPhareStorage = localStorage.getItem("seedPhrase");
+            //const { privateKey, address } = await loadAccount(seedPhareStorage);
+            const { privateKey, address } = loadAccount(data.seedPhrase, 0);
+            console.log("Private Key --->", privateKey);
             keyData.privateKey = privateKey;
-            keyData.publicKey = publicKey;
             keyData.address = address;
           } else {
-            const seedPhrase = await generateSeedPhrase(data.token);
-            localStorage.setItem("seedPhrase", seedPhrase);
-            const { privateKey, publicKey, address } =
-              await loadAccountBlockchain(seedPhrase);
+            const seedPhrase = generateSeedPhrase(data.token);
+            const { privateKey, address } = loadAccount(seedPhrase, 0);
+
+            const smart_wallet_address_data = await createSmartWallet(
+              address,
+              data.user.email
+            );
 
             keyData.privateKey = privateKey;
-            keyData.publicKey = publicKey;
             keyData.address = address;
+            keyData.smart_wallet_address = smart_wallet_address_data;
 
-            await createSmartWallet(address);
+            await fetch(`${NEXT_PUBLIC_BACKEND}/user/update/privatekey`, {
+              method: "POST",
+              body: JSON.stringify({
+                seedPhrase: seedPhrase,
+                privateKey: keyData.privateKey,
+                email: data.user.email,
+              }),
+              headers: {
+                cache: "no-store",
+                "Content-Type": "application/json",
+              },
+            });
           }
-
-          account.accessToken = data.token;
+          console.log("KeyData --->", keyData);
+          //account.accessToken = data.token;
           account.privateKey = keyData.privateKey;
-          account.publicKey = keyData.publicKey;
           account.address = keyData.address;
+          account.smart_wallet_address = keyData.smart_wallet_address;
 
           return {
             id: data.user._id,
             provider: "google",
+            accessToken: data.token,
+            privateKey: keyData.privateKey,
+            address: keyData.address,
           };
         }
         return true;
