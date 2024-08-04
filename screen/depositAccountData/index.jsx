@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 export default function DepositAccountData({ alias, wallet }) {
   const router = useRouter();
   return (
-    <div className="mx-4">
+    <div className="mx-4 my-14">
       <div className="text-black text-md text-center font-semibold">
         <h3>Comparte tu información para realizar un depósito.</h3>
       </div>
