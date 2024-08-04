@@ -9,13 +9,18 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import PaymentMP from "public/paymentsmp.png";
 
-const ButtonSelect = ({ children, onClick, optionSelectedCurrent }) => {
+const ButtonSelect = ({
+  children,
+  onClick,
+  optionSelectedCurrent,
+  addClassname,
+}) => {
   return (
     <button
       onClick={onClick}
       className={`${
         optionSelectedCurrent ? "bg-[#878dd8]" : "bg-[#f6f6f6]"
-      } text-black font-bold py-4 px-6 items-center flex flex-row rounded-lg my-3 w-full`} // w-64
+      } text-black font-bold py-4 px-6 items-center flex flex-row rounded-lg my-3 w-full ${addClassname}`} // w-64
     >
       {children}
     </button>
@@ -55,7 +60,7 @@ export default function ScreenDeposit() {
       icon: PaymentMP,
       current: false,
       key: "marketPayment",
-      href: "/protect/deposit/market",
+      href: "/protect/deposit",
     },
   ];
   const router = useRouter();
@@ -89,12 +94,14 @@ export default function ScreenDeposit() {
         {optionsDeposits.map((option, index) => (
           <ButtonSelect
             key={index}
-            onClick={() => setOptionSelected(option.href)}
+            onClick={() => setOptionSelected("")}
             optionSelectedCurrent={optionSelected === option.href}
+            addClassname="opacity-50"
           >
             <Link className={`flex flex-row items-center`} href={option.href}>
               <Image src={option.icon} alt={option.name} />
               <span className="mx-2">{option.name}</span>
+              <span className="text-sm font-normal">Pronto</span>
             </Link>
           </ButtonSelect>
         ))}
