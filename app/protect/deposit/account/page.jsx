@@ -29,7 +29,7 @@ export default async function SSRDepositAccountData() {
   return (
     <DepositAccountData
       alias="aliast_feew"
-      wallet={userInfo.address || "0x000"}
+      wallet={userInfo.wallet || "0x000"}
     />
   );
 }

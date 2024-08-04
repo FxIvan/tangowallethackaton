@@ -65,12 +65,6 @@ const createSmartWallet = async (accountAddress, email) => {
       body: JSON.stringify({ address: accountAddress, email }),
     });
 
-    // Check response
-    if (!response.ok) {
-      throw new Error("Backend request failed");
-    }
-
-    // Get response data
     const data = await response.json();
 
     // Get Smart Wallet address from data
