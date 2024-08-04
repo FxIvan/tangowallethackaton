@@ -1,11 +1,11 @@
 const { ethers } = require("ethers");
 const bip39 = require("bip39");
 
+const ecc = require("tiny-secp256k1");
 const { BIP32Factory } = require("bip32");
-const { secp256k1 } = require("@bitcoinerlab/secp256k1");
 const { NEXT_PUBLIC_BACKEND } = require("constants/env");
-// You must wrap the @bitcoinerlab/secp256k1 implementation
-const bip32 = BIP32Factory(secp256k1);
+// You must wrap a tiny-secp256k1 compatible implementation
+const bip32 = BIP32Factory(ecc);
 
 //Tarea Seba: addres del usuario asociado al contrato en la DB
 const generateSeedPhrase = (token) => {
@@ -13,7 +13,7 @@ const generateSeedPhrase = (token) => {
   const numericArray = convertBinaryToNumber(token, 8);
   const entropy = toByteArray(numericArray);
 
-  // Generate 12-word mnemonic
+  // Generate 12 worlds mnemonic
   const mnemonic = bip39.entropyToMnemonic(
     entropy.slice(7, 23),
     bip39.wordlists.EN
@@ -69,7 +69,7 @@ const createSmartWallet = async (accountAddress, email) => {
     // Get response data
     const data = await response.json();
 
-    // Get Smart Wallet address from data
+    // Get Samrt Wallet address from data
     const smart_wallet_address = data.contractAddress;
     return smart_wallet_address;
   } catch (error) {
