@@ -3,16 +3,41 @@ import Image from "next/image";
 import IconoScrollRounded from "public/IconoScrollRounded.png";
 import useForm from "../../../hooks/useForm";
 import WarningIcon from "public/WarningIcon.png";
-export default function ScreenWalletOrAlias() {
+import { NEXT_PUBLIC_BACKEND } from "constants/env";
+export default function ScreenWalletOrAlias({ session }) {
   const [form, handleChange, resetForm] = useForm({
     amount: "",
     alias: "",
     wallet: "",
   });
 
-  const handleSendTransfer = (e) => {
-    e.preventDefault();
-    console.log(form);
+  const handleSendTransfer = async (e) => {
+    try {
+      e.preventDefault();
+      const response = await fetch(`${NEXT_PUBLIC_BACKEND}/user/transfer`, {
+        method: "POST",
+        body: JSON.stringify({
+          senderID: session.user.id,
+          amount: form.amount,
+          wallet: form.wallet,
+          alias: form.alias,
+        }),
+        headers: {
+          cache: "no-store",
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+
+      if (data.status) {
+        console.log("Transferencia exitosa", data);
+        resetForm();
+      }
+    } catch (error) {
+      console.error("Error sending transfer:", error);
+      throw error;
+    }
   };
 
   return (
